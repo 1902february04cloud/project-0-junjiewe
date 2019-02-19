@@ -3,8 +3,14 @@
 '''
 This is your main script, this should call several other scripts within your packages.
 '''
+
+import controller.HandleUser as contrl
+import service.BussinessLogic as bssLogic
+
+
 def main():
-	print('TO-DO')
+	contrl.greeting()
+	
 
 if __name__ == '__main__':
 	main()
