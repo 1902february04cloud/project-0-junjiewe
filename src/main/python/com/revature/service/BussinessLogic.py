@@ -1,7 +1,10 @@
 import csv
 import os
 import ast
+import logging
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename='logic.log',level=logging.DEBUG, format='%(levelname)s%:%(message)s%')
 
 def Openfile(user):
 	with open('../../../resources/userdata.csv', 'r+') as f:
@@ -31,11 +34,13 @@ def Deposit(user):
 			val = float(amountdepo)
 		except ValueError:
 			print("INVALID INPUT")	
+			logger.error("INVALID INPUT FROM USER, MUST BE A POSITIVE NUMBER")
 			Deposit(user)
 			break
 		if(float(amountdepo) < 1):
 			os.system("clear")
 			print("INVALID INPUT, MUST BE GREATER THAN 1")
+			logger.error("INVALID INPUT FROM USER IN FUNCTION DEPOSIT")
 		else:   
 			userdata_list = []
 			val = float(data[1]) + float(amountdepo)	
@@ -103,10 +108,12 @@ def Withdraw(user):
 			val = float(amount)
 		except ValueError:
 			print("INVALID INPUT")
+			logger.error("USER INPUT INVALID IN FUNCTION WITHDRAW")
 			Withdraw(user)	
 			break
 		if(float(amount) < 1):
 			print("INVALID INPUT, MUST BE GREATER THAN 1")
+			logger.error("USER INPUT WAS LESS THAN 1 IN FUNCTION WITHDRAW")
 		else:
 			userdata_list = []
 			val = float(data[1]) - float(amount)
@@ -118,7 +125,8 @@ def Withdraw(user):
 						newstr = userdata_list[i][1][1:-1]
 						arr = newstr.split(',')
 						if float(arr[1]) - float(amount) < 0:
-							print("YOU DONT HAVE ENOUGH MONEY IN YOUR BANK!!")	
+							print("YOU DONT HAVE ENOUGH MONEY IN YOUR BANK!!")
+							logger.error("USER DOES NOT HAVE ENOUGH MONEY IN FUNCTION WITHDRAW")	
 							Withdraw(user)
 							break
 						else:
