@@ -4,36 +4,29 @@ import csv
 import service.BussinessLogic as bssLogic
 import logging
 
+
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
-formatter = logging.Formatter('%(levelname)s:%(name)s:%(message)s')
-file_handler = logging.FileHandler('../error/logging.log')
-file_handler.setFormatter(formatter)
-
-logger.addHandler(file_handler)
+logging.basicConfig(level=logging.ERROR, filename="logs.log")
 
 
 #greet the user
 def greeting():
 	while True:
-		os.system("clear")
 		txt = input("Welcome to SmartBanking!!\nType 'r' to register an account, type 'l' to login, type 'e' to exit\n")
-		if txt == 'r' or txt == 'l' or txt == 'e':
-			if txt == 'r':
-				InputReg()
-				greeting()
-				break
-			elif txt == 'l':
-				Login()
-				break
-			elif txt == 'e':
-				break	
+		if txt == 'r':
+			InputReg()
+			greeting()
+			break
+		elif txt == 'l':
+			Login()
+			break
+		elif txt == 'e':
+			break
 		else:
-			os.system("clear")
-			logger.error('YOUR INPUT WAS INVALID!!!')	
-
-
+			logger.error("INPUT VALUE WAS INVALID IN GREETING")
+			os.system('clear')	
+			print("INPUT VALUE WAS INVALID")
+			
 #Handles the Register input from a user
 def InputReg():
 	#read to the database
@@ -55,11 +48,10 @@ def InputReg():
 					transaction = ''
 					writer = csv.writer(f2)
 					writer.writerow([name,transaction])
-				break
-			
 			else:
+				logger.error('THE USERNAME IS TAKEN IN INPUTREG')
 				os.system("clear")
-				print('THE USERNAME IS TAKEN')
+				print("THE USERNAME IS TAKEN")
 
 #Handles Login for the user
 def Login():
@@ -70,8 +62,9 @@ def Login():
 			name = input("username: ")
 			password = getpass.getpass("password: ")
 			if name not in mydict:
+				logger.error("THE USERNAME DOES NOT EXIST")
 				os.system("clear")
-				print("THE USERNAME DOES NOT EXIST")
+				print("THE USERNAME DOES NOT EXIST")	
 				getinput = input("Do you want to register as an new user? Type 'y' for yes, Type 'n' for no\n")
 				if getinput == 'y':
 					greeting()
@@ -98,20 +91,9 @@ def Asking(user):
 		elif request == 'h':
 			bssLogic.checkHistory(user)
 		elif request == 'e':
+			os.system("clear")
 			greeting()
 			break
 			
-
-
-
-
-
-
-
-
-
-
-
-
 
 
